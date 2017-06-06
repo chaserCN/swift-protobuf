@@ -97,11 +97,17 @@ class MessageFieldGenerator: FieldGeneratorBase, FieldGenerator {
 
         p.print("\n", comments)
 
+        let hasNilAsDefault = (fieldDescriptor.file.syntax == .proto2 &&
+                               fieldDescriptor.label == .optional &&
+                               fieldDescriptor.explicitDefaultValue == nil)
+        
         if usesHeapStorage {
             p.print(
-              "\(visibility)var \(swiftName): \(swiftType) {\n")
+              "\(visibility)var \(swiftName): \(swiftType)\(hasNilAsDefault ? "?" : "") {\n")
             p.indent()
-            let defaultClause = hasFieldPresence ? " ?? \(swiftDefaultValue)" : ""
+            
+            let defaultClause = hasFieldPresence && !hasNilAsDefault ? " ?? \(swiftDefaultValue)" : ""
+            
             p.print(
               "get {return _storage.\(underscoreSwiftName)\(defaultClause)}\n",
               "set {_uniqueStorage().\(underscoreSwiftName) = newValue}\n")
@@ -109,10 +115,13 @@ class MessageFieldGenerator: FieldGeneratorBase, FieldGenerator {
             p.print("}\n")
         } else {
             if hasFieldPresence {
-                p.print("\(visibility)var \(swiftName): \(swiftType) {\n")
+                p.print("\(visibility)var \(swiftName): \(swiftType)\(hasNilAsDefault ? "?" : "") {\n")
                 p.indent()
+
+                let defaultClause = !hasNilAsDefault ? " ?? \(swiftDefaultValue)" : ""
+
                 p.print(
-                  "get {return \(underscoreSwiftName) ?? \(swiftDefaultValue)}\n",
+                  "get {return \(underscoreSwiftName)\(defaultClause)}\n",
                   "set {\(underscoreSwiftName) = newValue}\n")
                 p.outdent()
                 p.print("}\n")
