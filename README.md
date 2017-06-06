@@ -11,8 +11,8 @@ will be transformed to
 
 ``` swift
 var nullableVar: Int64? {
-get {return _nullableVar}
-set {_nullableVar = newValue}
+    get {return _nullableVar}
+    set {_nullableVar = newValue}
 }
 ```
 
@@ -24,7 +24,7 @@ nothing changes:<br/>
 
 ``` swift
 var someVar: Int64 {
-get {return _someVar ?? 0}
-set {_someVar = newValue}
+    get {return _someVar ?? 0}
+    set {_someVar = newValue}
 }
 ```
