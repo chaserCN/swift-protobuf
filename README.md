@@ -17,7 +17,7 @@ var nullableVar: Int64? {
 ```
 
 For other cases:<br/> 
-`required int64 someVar = 1 [default 0]; //default value will be serialized`<br/> 
+`required int64 someVar = 1; //default value will be serialized`<br/> 
 `optional int64 someVar = 1 [default 0]; //default value will NOT be serialized`
 
 nothing changes:<br/> 
