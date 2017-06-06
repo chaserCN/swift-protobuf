@@ -5,7 +5,7 @@ No distinction between 0 and NULL, which is a blasphemy for SQL.
 So here is a little change for protobuf v2 to ease the pain. <br/> 
 Optionals without a specified default value will have default default value - NULL.<br/> 
 
-`optional int64 someVar = 1;`<br/> 
+`optional int64 nullableVar = 1;`<br/> 
 
 will be transformed to 
 
